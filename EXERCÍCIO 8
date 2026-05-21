@@ -1,0 +1,12 @@
+class MinimoBST {
+    /**
+     * O menor valor numa BST está sempre no nó mais à esquerda.
+     */
+    public static int encontrarMinimo(NoBST raiz) {
+        if (raiz == null) throw new NoSuchElementException("Árvore vazia");
+        NoBST atual = raiz;
+        while (atual.esquerdo != null) atual = atual.esquerdo;
+        return atual.valor;
+    }
+}
+ 
