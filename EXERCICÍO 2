@@ -1,0 +1,24 @@
+class NoBST {
+    int valor;
+    NoBST esquerdo, direito;
+ 
+    NoBST(int valor) { this.valor = valor; }
+}
+ 
+class ValidadorBST {
+    /**
+     * Retorna true se a árvore com raiz 'no' é uma BST válida.
+     * Usa limites Long para cobrir int.MIN_VALUE e int.MAX_VALUE.
+     */
+    public boolean ehBST(NoBST no) {
+        return verificar(no, Long.MIN_VALUE, Long.MAX_VALUE);
+    }
+ 
+    private boolean verificar(NoBST no, long min, long max) {
+        if (no == null) return true;
+        if (no.valor <= min || no.valor >= max) return false;
+        return verificar(no.esquerdo, min, no.valor)
+            && verificar(no.direito, no.valor, max);
+    }
+}
+ 
