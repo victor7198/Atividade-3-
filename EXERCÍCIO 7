@@ -1,0 +1,18 @@
+class DFS {
+    /**
+     * Exibe todos os vértices visitados a partir de 'origem'.
+     */
+    public static void percorrer(Grafo grafo, int origem) {
+        boolean[] visitado = new boolean[grafo.getVertices()];
+        System.out.print("DFS a partir de " + origem + ": ");
+        dfsRec(grafo, origem, visitado);
+        System.out.println();
+    }
+ 
+    private static void dfsRec(Grafo grafo, int v, boolean[] visitado) {
+        visitado[v] = true;
+        System.out.print(v + " ");
+        for (int viz : grafo.vizinhos(v))
+            if (!visitado[viz]) dfsRec(grafo, viz, visitado);
+    }
+}
