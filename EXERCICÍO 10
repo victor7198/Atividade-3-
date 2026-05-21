@@ -1,0 +1,38 @@
+class OrdenacaoTopologica {
+    /**
+     * Retorna a ordenação topológica de um grafo DIRIGIDO acíclico (DAG).
+     * Usa o algoritmo de Kahn (BFS por grau de entrada).
+     * Lança exceção se o grafo contiver ciclo.
+     */
+    public static List<Integer> ordenar(int vertices, List<int[]> arestas) {
+        // grau de entrada de cada vértice
+        int[] grauEntrada = new int[vertices];
+        List<List<Integer>> adj = new ArrayList<>();
+        for (int i = 0; i < vertices; i++) adj.add(new ArrayList<>());
+ 
+        for (int[] a : arestas) {
+            adj.get(a[0]).add(a[1]);
+            grauEntrada[a[1]]++;
+        }
+ 
+        Queue<Integer> fila = new LinkedList<>();
+        for (int i = 0; i < vertices; i++)
+            if (grauEntrada[i] == 0) fila.add(i);
+ 
+        List<Integer> resultado = new ArrayList<>();
+        while (!fila.isEmpty()) {
+            int u = fila.poll();
+            resultado.add(u);
+            for (int v : adj.get(u)) {
+                grauEntrada[v]--;
+                if (grauEntrada[v] == 0) fila.add(v);
+            }
+        }
+ 
+        if (resultado.size() != vertices)
+            throw new IllegalArgumentException("O grafo contém ciclo – ordenação topológica impossível.");
+ 
+        return resultado;
+    }
+}
+ 
