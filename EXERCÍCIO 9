@@ -1,0 +1,79 @@
+class GrafoPonderado {
+    private final int vertices;
+    private final List<List<int[]>> adj; // int[] = {vizinho, peso}
+ 
+    GrafoPonderado(int vertices) {
+        this.vertices = vertices;
+        adj = new ArrayList<>();
+        for (int i = 0; i < vertices; i++) adj.add(new ArrayList<>());
+    }
+ 
+    public void adicionarAresta(int u, int v, int peso) {
+        adj.get(u).add(new int[]{v, peso});
+        adj.get(v).add(new int[]{u, peso});
+    }
+ 
+    /** Retorna a distância mínima de 'origem' a todos os vértices. */
+    public int[] dijkstra(int origem) {
+        int[] dist = new int[vertices];
+        Arrays.fill(dist, Integer.MAX_VALUE);
+        dist[origem] = 0;
+ 
+        // fila de prioridade: {distância, vértice}
+        PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[0]));
+        pq.add(new int[]{0, origem});
+ 
+        while (!pq.isEmpty()) {
+            int[] par  = pq.poll();
+            int d      = par[0];
+            int u      = par[1];
+            if (d > dist[u]) continue;
+ 
+            for (int[] aresta : adj.get(u)) {
+                int v    = aresta[0];
+                int peso = aresta[1];
+                if (dist[u] + peso < dist[v]) {
+                    dist[v] = dist[u] + peso;
+                    pq.add(new int[]{dist[v], v});
+                }
+            }
+        }
+        return dist;
+    }
+ 
+    /** Retorna o caminho mais curto entre origem e destino. */
+    public List<Integer> caminho(int origem, int destino) {
+        int[] dist     = new int[vertices];
+        int[] anterior = new int[vertices];
+        Arrays.fill(dist, Integer.MAX_VALUE);
+        Arrays.fill(anterior, -1);
+        dist[origem] = 0;
+ 
+        PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[0]));
+        pq.add(new int[]{0, origem});
+ 
+        while (!pq.isEmpty()) {
+            int[] par = pq.poll();
+            int u     = par[1];
+            if (par[0] > dist[u]) continue;
+            for (int[] aresta : adj.get(u)) {
+                int v    = aresta[0];
+                int peso = aresta[1];
+                if (dist[u] + peso < dist[v]) {
+                    dist[v]     = dist[u] + peso;
+                    anterior[v] = u;
+                    pq.add(new int[]{dist[v], v});
+                }
+            }
+        }
+ 
+        List<Integer> caminho = new LinkedList<>();
+        if (dist[destino] == Integer.MAX_VALUE) return caminho;
+        for (int cur = destino; cur != -1; cur = anterior[cur])
+            ((LinkedList<Integer>) caminho).addFirst(cur);
+        return caminho;
+    }
+ 
+    public int getVertices() { return vertices; }
+}
+ 
