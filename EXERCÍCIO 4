@@ -1,0 +1,16 @@
+class BuscaBinaria {
+    /**
+     * Retorna o índice de 'alvo' no array ORDENADO, ou -1.
+     */
+    public static int buscar(int[] array, int alvo) {
+        int inicio = 0, fim = array.length - 1;
+        while (inicio <= fim) {
+            int meio = inicio + (fim - inicio) / 2;
+            if (array[meio] == alvo)  return meio;
+            if (array[meio] < alvo)   inicio = meio + 1;
+            else                       fim    = meio - 1;
+        }
+        return -1;
+    }
+}
+ 
