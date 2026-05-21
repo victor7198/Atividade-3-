@@ -1,0 +1,39 @@
+class BFS {
+    /**
+     * Retorna o caminho mais curto (lista de vértices) entre 'origem'
+     * e 'destino', ou lista vazia se não houver caminho.
+     */
+    public static List<Integer> caminhoMaisCurto(Grafo grafo, int origem, int destino) {
+        int v = grafo.getVertices();
+        boolean[] visitado  = new boolean[v];
+        int[]     anterior  = new int[v];
+        Arrays.fill(anterior, -1);
+ 
+        Queue<Integer> fila = new LinkedList<>();
+        visitado[origem] = true;
+        fila.add(origem);
+ 
+        while (!fila.isEmpty()) {
+            int atual = fila.poll();
+            if (atual == destino) break;
+ 
+            for (int viz : grafo.vizinhos(atual)) {
+                if (!visitado[viz]) {
+                    visitado[viz]  = true;
+                    anterior[viz]  = atual;
+                    fila.add(viz);
+                }
+            }
+        }
+ 
+        // Reconstrói o caminho
+        List<Integer> caminho = new LinkedList<>();
+        if (!visitado[destino]) return caminho; // sem caminho
+ 
+        for (int cur = destino; cur != -1; cur = anterior[cur])
+            ((LinkedList<Integer>) caminho).addFirst(cur);
+ 
+        return caminho;
+    }
+}
+ 
