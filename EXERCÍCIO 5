@@ -1,0 +1,27 @@
+class Grafo {
+    private final int vertices;
+    private final List<List<Integer>> adj;
+ 
+    Grafo(int vertices) {
+        this.vertices = vertices;
+        adj = new ArrayList<>();
+        for (int i = 0; i < vertices; i++) adj.add(new ArrayList<>());
+    }
+ 
+    public void adicionarAresta(int u, int v) {
+        adj.get(u).add(v);
+        adj.get(v).add(u); // grafo não-dirigido
+    }
+ 
+    public List<Integer> vizinhos(int u) { return adj.get(u); }
+    public int getVertices()             { return vertices;    }
+ 
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("Grafo:\n");
+        for (int i = 0; i < vertices; i++)
+            sb.append("  ").append(i).append(" → ").append(adj.get(i)).append("\n");
+        return sb.toString();
+    }
+}
+ 
