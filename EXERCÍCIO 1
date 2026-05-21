@@ -1,0 +1,79 @@
+class Livro {
+    String titulo;
+    String autor;
+    int ano;
+ 
+    Livro(String titulo, String autor, int ano) {
+        this.titulo = titulo;
+        this.autor  = autor;
+        this.ano    = ano;
+    }
+ 
+    @Override
+    public String toString() {
+        return "\"" + titulo + "\" – " + autor + " (" + ano + ")";
+    }
+}
+ 
+class NoLivro {
+    Livro livro;
+    NoLivro esquerdo, direito;
+ 
+    NoLivro(Livro livro) { this.livro = livro; }
+}
+ 
+class ArvoreBinariaLivros {
+    private NoLivro raiz;
+ 
+    /** Insere em ordem alfabética pelo título (mantém BST). */
+    public void inserir(Livro livro) {
+        raiz = inserirRec(raiz, livro);
+    }
+ 
+    private NoLivro inserirRec(NoLivro no, Livro livro) {
+        if (no == null) return new NoLivro(livro);
+        int cmp = livro.titulo.compareToIgnoreCase(no.livro.titulo);
+        if (cmp < 0) no.esquerdo = inserirRec(no.esquerdo, livro);
+        else if (cmp > 0) no.direito = inserirRec(no.direito, livro);
+        return no;
+    }
+ 
+    /** Pré-ordem: raiz → esquerda → direita */
+    public void preOrdem() {
+        System.out.println("=== Pré-Ordem ===");
+        preOrdemRec(raiz);
+    }
+ 
+    private void preOrdemRec(NoLivro no) {
+        if (no == null) return;
+        System.out.println(no.livro);
+        preOrdemRec(no.esquerdo);
+        preOrdemRec(no.direito);
+    }
+ 
+    /** Em ordem: esquerda → raiz → direita  (ordem alfabética) */
+    public void emOrdem() {
+        System.out.println("=== Em Ordem (alfabética) ===");
+        emOrdemRec(raiz);
+    }
+ 
+    private void emOrdemRec(NoLivro no) {
+        if (no == null) return;
+        emOrdemRec(no.esquerdo);
+        System.out.println(no.livro);
+        emOrdemRec(no.direito);
+    }
+ 
+    /** Pós-ordem: esquerda → direita → raiz */
+    public void posOrdem() {
+        System.out.println("=== Pós-Ordem ===");
+        posOrdemRec(raiz);
+    }
+ 
+    private void posOrdemRec(NoLivro no) {
+        if (no == null) return;
+        posOrdemRec(no.esquerdo);
+        posOrdemRec(no.direito);
+        System.out.println(no.livro);
+    }
+}
